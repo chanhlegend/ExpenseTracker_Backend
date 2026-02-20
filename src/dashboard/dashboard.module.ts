@@ -6,13 +6,13 @@ import { Transaction, TransactionSchema } from '../schemas/transaction.schema';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-    imports: [
-        MongooseModule.forFeature([
-            { name: Transaction.name, schema: TransactionSchema },
-        ]),
-        AuthModule,
-    ],
-    controllers: [DashboardController],
-    providers: [DashboardService],
+  imports: [
+    MongooseModule.forFeature([
+      { name: Transaction.name, schema: TransactionSchema },
+    ]),
+    AuthModule,
+  ],
+  controllers: [DashboardController],
+  providers: [DashboardService],
 })
-export class DashboardModule { }
+export class DashboardModule {}

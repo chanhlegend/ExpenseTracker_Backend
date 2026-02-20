@@ -8,24 +8,22 @@ import { User, UserDocument } from '../schemas/user.schema';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(
-        configService: ConfigService,
-        @InjectModel(User.name) private userModel: Model<UserDocument>,
-    ) {
-        super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
-            secretOrKey: configService.get<string>('JWT_SECRET', 'default-secret'),
-        });
-    }
+  constructor(
+    configService: ConfigService,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+  ) {
+    super({
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: false,
+      secretOrKey: configService.get<string>('JWT_SECRET', 'default-secret'),
+    });
+  }
 
-    async validate(payload: { sub: string; email: string }) {
-        const user = await this.userModel
-            .findById(payload.sub)
-            .select('-password');
-        if (!user) {
-            throw new UnauthorizedException('User not found');
-        }
-        return user;
+  async validate(payload: { sub: string; email: string }) {
+    const user = await this.userModel.findById(payload.sub).select('-password');
+    if (!user) {
+      throw new UnauthorizedException('User not found');
     }
+    return user;
+  }
 }
